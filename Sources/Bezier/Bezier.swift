@@ -15,24 +15,6 @@ public struct Bezier<Point> {
         self.controlPoints = controlPoints
     }
 
-    /// A constant, degree-zero curve.
-    public init(point: Point) { self.controlPoints = [point] }
-
-    public init(start: Point, end: Point) {
-        self.controlPoints = [start, end]
-    }
-
-    public init(start: Point, control: Point, end: Point) {
-        self.controlPoints = [start, control, end]
-    }
-
-    public init(start: Point, control1: Point, control2: Point, end: Point) {
-        self.controlPoints = [start, control1, control2, end]
-    }
-
-    // Only operations known to preserve nonemptiness may use this initializer.
-    private init(nonempty controlPoints: [Point]) { self.controlPoints = controlPoints }
-
     public var degree: Int { controlPoints.count - 1 }
     public var start: Point { controlPoints[0] }
     public var end: Point { controlPoints[controlPoints.count - 1] }
@@ -96,3 +78,23 @@ public struct Bezier<Point> {
 extension Bezier: Equatable where Point: Equatable {}
 extension Bezier: Hashable where Point: Hashable {}
 extension Bezier: Sendable where Point: Sendable {}
+
+extension Bezier {
+    /// A constant, degree-zero curve.
+    public init(point: Point) { self.controlPoints = [point] }
+
+    public init(start: Point, end: Point) {
+        self.controlPoints = [start, end]
+    }
+
+    public init(start: Point, control: Point, end: Point) {
+        self.controlPoints = [start, control, end]
+    }
+
+    public init(start: Point, control1: Point, control2: Point, end: Point) {
+        self.controlPoints = [start, control1, control2, end]
+    }
+
+    // Only operations known to preserve nonemptiness may use this initializer.
+    private init(nonempty controlPoints: [Point]) { self.controlPoints = controlPoints }
+}
