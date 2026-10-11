@@ -1,21 +1,19 @@
 public struct Bezier<Point> {
     public let controlPoints: [Point]
 
-    public enum Error: Swift.Error, Equatable, Sendable {
-        case empty
-    }
-
     public init(controlPoints: [Point]) throws(Error) {
         guard !controlPoints.isEmpty else { throw .empty }
         self.controlPoints = controlPoints
     }
+}
 
+extension Bezier {
     public var degree: Int { controlPoints.count - 1 }
     public var start: Point { controlPoints[0] }
     public var end: Point { controlPoints[controlPoints.count - 1] }
     public var reversed: Self { Self(nonempty: controlPoints.reversed()) }
 
-    public func map<Result, Failure: Swift.Error>(
+    public func map<Result, Failure: Swift::Error>(
         _ transform: (Point) throws(Failure) -> Result
     ) throws(Failure) -> Bezier<Result> {
         var result: [Result] = []
@@ -24,7 +22,7 @@ public struct Bezier<Point> {
         return Bezier<Result>(nonempty: result)
     }
 
-    public func value<Parameter, Failure: Swift.Error>(
+    public func value<Parameter, Failure: Swift::Error>(
         at parameter: Parameter,
         interpolating interpolate: (Point, Point, Parameter) throws(Failure) -> Point
     ) throws(Failure) -> Point {
@@ -39,7 +37,7 @@ public struct Bezier<Point> {
         return row[0]
     }
 
-    public func split<Parameter, Failure: Swift.Error>(
+    public func split<Parameter, Failure: Swift::Error>(
         at parameter: Parameter,
         interpolating interpolate: (Point, Point, Parameter) throws(Failure) -> Point
     ) throws(Failure) -> (left: Self, right: Self) {
