@@ -10,7 +10,9 @@ struct `Bezier coding` {
         let data = try JSONEncoder().encode(curve)
         #expect(try JSONDecoder().decode([Int].self, from: data) == [1, 1, 1])
         #expect(try JSONDecoder().decode(Bezier<Int>.self, from: data) == curve)
-        #expect(try JSONDecoder().decode(Bezier<Int>.self, from: Data("[5]".utf8)) == Bezier(point: 5))
+        #expect(
+            try JSONDecoder().decode(Bezier<Int>.self, from: Data("[5]".utf8)) == Bezier(point: 5)
+        )
     }
 
     @Test(arguments: ["[]", "null", "{}", "[1, null]"])

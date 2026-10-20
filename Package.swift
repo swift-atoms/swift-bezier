@@ -11,24 +11,28 @@ let package = Package(
     ],
     targets: [
         .target(name: "Bezier"),
-        .testTarget(name: "Bezier Tests", dependencies: [
-            .target(name: "Bezier"),
-            .product(name: "Point", package: "swift-point"),
-            .product(name: "Tagged", package: "swift-tagged"),
-        ]),
+        .testTarget(
+            name: "Bezier Tests",
+            dependencies: [
+                .target(name: "Bezier"),
+                .product(name: "Point", package: "swift-point"),
+                .product(name: "Tagged", package: "swift-tagged"),
+            ]
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .strictMemorySafety(),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        .enableUpcomingFeature("MemberImportVisibility"),
-        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableUpcomingFeature("InferIsolatedConformances"),
-        .enableExperimentalFeature("Lifetimes"),
-        .treatAllWarnings(as: .error),
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .strictMemorySafety(),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+            .enableUpcomingFeature("InferIsolatedConformances"),
+            .enableExperimentalFeature("Lifetimes"),
+            .treatAllWarnings(as: .error),
+        ]
 }

@@ -24,8 +24,14 @@ struct `Bezier contracts` {
         #expect(curve.degree == 0)
         #expect(curve.start == curve.end)
         var calls = 0
-        let value = curve.value(at: 0.5) { a, _, _ in calls += 1; return a }
-        let parts = curve.split(at: 0.5) { a, _, _ in calls += 1; return a }
+        let value = curve.value(at: 0.5) { a, _, _ in
+            calls += 1
+            return a
+        }
+        let parts = curve.split(at: 0.5) { a, _, _ in
+            calls += 1
+            return a
+        }
         #expect(value == "constant")
         #expect(calls == 0)
         #expect(parts.left == curve)
@@ -61,8 +67,10 @@ struct `Bezier contracts` {
         #expect(curve.value(at: 0.5, interpolating: interpolate) == 2)
         #expect(curve.value(at: 1.0, interpolating: interpolate) == 4)
         #expect(curve.value(at: 2.0, interpolating: interpolate) == 8)
-        #expect(Bezier(start: 0.0, control: 4.0, end: 0.0)
-            .value(at: 0.5, interpolating: interpolate) == 2)
+        #expect(
+            Bezier(start: 0.0, control: 4.0, end: 0.0)
+                .value(at: 0.5, interpolating: interpolate) == 2
+        )
     }
 
     @Test
@@ -75,12 +83,18 @@ struct `Bezier contracts` {
         #expect(parts.left.degree == curve.degree)
         #expect(parts.right.degree == curve.degree)
         for u in [0.0, 0.25, 0.5, 0.75, 1.0] {
-            #expect(parts.left.value(at: u, interpolating: interpolate)
-                == curve.value(at: u * 0.5, interpolating: interpolate))
-            #expect(parts.right.value(at: u, interpolating: interpolate)
-                == curve.value(at: 0.5 + u * 0.5, interpolating: interpolate))
-            #expect(curve.reversed.value(at: u, interpolating: interpolate)
-                == curve.value(at: 1 - u, interpolating: interpolate))
+            #expect(
+                parts.left.value(at: u, interpolating: interpolate)
+                    == curve.value(at: u * 0.5, interpolating: interpolate)
+            )
+            #expect(
+                parts.right.value(at: u, interpolating: interpolate)
+                    == curve.value(at: 0.5 + u * 0.5, interpolating: interpolate)
+            )
+            #expect(
+                curve.reversed.value(at: u, interpolating: interpolate)
+                    == curve.value(at: 1 - u, interpolating: interpolate)
+            )
         }
     }
 
