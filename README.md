@@ -4,7 +4,7 @@ Use this package when you need a Bézier curve of any degree over a point type y
 
 ## Laws
 
-- A curve is its control polygon, and `degree` is always `controlPoints.count - 1`. The degree is never reduced: three equal control points still make a degree-2 curve. Equality and hashing compare the control points in order. A curve and its `reversed` are therefore unequal, and so are two control polygons that trace the same geometry.
+- A curve is its control polygon, and `degree` is always `controlPoints.count - 1`. The degree is never reduced: three equal control points still make a degree-2 curve. Equality and hashing compare the control points in order. A curve and its `reversed` are therefore unequal unless the control points read the same in both orders, and so are two control polygons that trace the same geometry.
 - `value(at:interpolating:)` and `split(at:interpolating:)` run de Casteljau's algorithm with the closure you pass. The geometric laws below hold only when that closure is a linear interpolation, that is `interpolate(a, b, 0) == a`, `interpolate(a, b, 1) == b`, and affine in between:
   - `value(at: 0)` is `start` and `value(at: 1)` is `end`.
   - The parameter is not clamped. Values outside `0...1` extrapolate.
