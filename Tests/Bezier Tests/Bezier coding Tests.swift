@@ -17,7 +17,7 @@ struct `Bezier coding` {
 
     @Test(arguments: ["[]", "null", "{}", "[1, null]"])
     func `Decoding cannot bypass the control list contract`(_ json: String) {
-        #expect(throws: (any Error).self) {
+        #expect(throws: (any Swift.Error).self) {
             try JSONDecoder().decode(Bezier<Int>.self, from: Data(json.utf8))
         }
     }

@@ -111,7 +111,7 @@ struct `Bezier contracts` {
 
     @Test
     func `Control mapping preserves order and stops on typed failure`() {
-        enum Failure: Error { case rejected }
+        enum Failure: Swift.Error { case rejected }
         let curve = Bezier(start: 1, control: 2, end: 3)
         #expect(curve.map(String.init).controlPoints == ["1", "2", "3"])
         var visited: [Int] = []
@@ -131,7 +131,7 @@ struct `Bezier contracts` {
 
     @Test
     func `Evaluation and subdivision propagate the interpolation error`() {
-        enum Failure: Error { case rejected }
+        enum Failure: Swift.Error { case rejected }
         let curve = Bezier(start: 1, control: 2, end: 3)
         var calls = 0
         func fail(_ a: Int, _ b: Int, _ t: Int) throws(Failure) -> Int {
