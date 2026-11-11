@@ -1,6 +1,7 @@
 public struct Bezier<Point> {
     public let controlPoints: [Point]
 
+    @inlinable
     public init(controlPoints: [Point]) throws(Error) {
         guard !controlPoints.isEmpty else { throw .empty }
         self.controlPoints = controlPoints
@@ -8,11 +9,16 @@ public struct Bezier<Point> {
 }
 
 extension Bezier {
+    @inlinable
     public var degree: Int { controlPoints.count - 1 }
+    @inlinable
     public var start: Point { controlPoints[0] }
+    @inlinable
     public var end: Point { controlPoints[controlPoints.count - 1] }
+    @inlinable
     public var reversed: Self { Self(nonempty: controlPoints.reversed()) }
 
+    @inlinable
     public func map<Result, Failure: Swift::Error>(
         _ transform: (Point) throws(Failure) -> Result
     ) throws(Failure) -> Bezier<Result> {
@@ -22,6 +28,7 @@ extension Bezier {
         return Bezier<Result>(nonempty: result)
     }
 
+    @inlinable
     public func value<Parameter, Failure: Swift::Error>(
         at parameter: Parameter,
         interpolating interpolate: (Point, Point, Parameter) throws(Failure) -> Point
@@ -37,6 +44,7 @@ extension Bezier {
         return row[0]
     }
 
+    @inlinable
     public func split<Parameter, Failure: Swift::Error>(
         at parameter: Parameter,
         interpolating interpolate: (Point, Point, Parameter) throws(Failure) -> Point
@@ -65,25 +73,31 @@ extension Bezier: Sendable where Point: Sendable {}
 
 extension Bezier {
 
+    @inlinable
     public init(point: Point) { self.controlPoints = [point] }
 
+    @inlinable
     public init(start: Point, end: Point) {
         self.controlPoints = [start, end]
     }
 
+    @inlinable
     public init(start: Point, control: Point, end: Point) {
         self.controlPoints = [start, control, end]
     }
 
+    @inlinable
     public init(start: Point, control1: Point, control2: Point, end: Point) {
         self.controlPoints = [start, control1, control2, end]
     }
 
+    @usableFromInline
     internal init(nonempty controlPoints: [Point]) { self.controlPoints = controlPoints }
 }
 
 #if !hasFeature(Embedded)
     extension Bezier: Encodable where Point: Encodable {
+        @inlinable
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.singleValueContainer()
             try container.encode(controlPoints)
@@ -91,6 +105,7 @@ extension Bezier {
     }
 
     extension Bezier: Decodable where Point: Decodable {
+        @inlinable
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
             let points = try container.decode([Point].self)

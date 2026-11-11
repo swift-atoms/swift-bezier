@@ -2,6 +2,7 @@ extension Bezier {
     public struct Patch {
         public let rows: [Bezier<Point>]
 
+        @inlinable
         public init(rows: [Bezier<Point>]) throws(Bezier<Point>.Error) {
             guard let first = rows.first else { throw .empty }
             guard rows.allSatisfy({ $0.degree == first.degree }) else { throw .ragged }
@@ -11,12 +12,16 @@ extension Bezier {
 }
 
 extension Bezier.Patch {
+    @inlinable
     public var degree: (u: Int, v: Int) { (rows[0].degree, rows.endIndex - 1) }
+    @inlinable
     public var columns: [Bezier<Point>] {
         (0...degree.u).map { index in Bezier(nonempty: rows.map { $0.controlPoints[index] }) }
     }
+    @inlinable
     public var transposed: Self { Self(rectangular: columns) }
 
+    @inlinable
     public func map<Result, Failure: Swift::Error>(
         _ transform: (Point) throws(Failure) -> Result
     ) throws(Failure) -> Bezier<Result>.Patch {
@@ -26,6 +31,7 @@ extension Bezier.Patch {
         return Bezier<Result>.Patch(rectangular: result)
     }
 
+    @inlinable
     public func row<Parameter, Failure: Swift::Error>(
         at v: Parameter,
         interpolating interpolate: (Point, Point, Parameter) throws(Failure) -> Point
@@ -36,6 +42,7 @@ extension Bezier.Patch {
         return Bezier(nonempty: points)
     }
 
+    @inlinable
     public func column<Parameter, Failure: Swift::Error>(
         at u: Parameter,
         interpolating interpolate: (Point, Point, Parameter) throws(Failure) -> Point
@@ -46,6 +53,7 @@ extension Bezier.Patch {
         return Bezier(nonempty: points)
     }
 
+    @inlinable
     public func value<Parameter, Failure: Swift::Error>(
         at u: Parameter,
         _ v: Parameter,
@@ -60,6 +68,7 @@ extension Bezier.Patch: Hashable where Point: Hashable {}
 extension Bezier.Patch: Sendable where Point: Sendable {}
 
 extension Bezier.Patch {
+    @inlinable
     public init(controlPoints: [[Point]]) throws(Bezier<Point>.Error) {
         var rows: [Bezier<Point>] = []
         rows.reserveCapacity(controlPoints.count)
@@ -67,11 +76,13 @@ extension Bezier.Patch {
         try self.init(rows: rows)
     }
 
+    @usableFromInline
     internal init(rectangular rows: [Bezier<Point>]) { self.rows = rows }
 }
 
 #if !hasFeature(Embedded)
     extension Bezier.Patch: Encodable where Point: Encodable {
+        @inlinable
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.singleValueContainer()
             try container.encode(rows)
@@ -79,6 +90,7 @@ extension Bezier.Patch {
     }
 
     extension Bezier.Patch: Decodable where Point: Decodable {
+        @inlinable
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
             let rows = try container.decode([Bezier<Point>].self)
