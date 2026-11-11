@@ -79,7 +79,7 @@ extension Bezier {
         self.controlPoints = [start, control1, control2, end]
     }
 
-    private init(nonempty controlPoints: [Point]) { self.controlPoints = controlPoints }
+    internal init(nonempty controlPoints: [Point]) { self.controlPoints = controlPoints }
 }
 
 #if !hasFeature(Embedded)
